@@ -22,20 +22,21 @@ RUN apt-get update && \
 # Installing EmlAnalyzer - Email Forensics & Volatility3 - Memory Forensics
 RUN pip3 install eml-analyzer volatility3
 
-# Installing Stegsolve, jsteg, and slink - Steganography
+# Installing Stegsolve, jsteg, and slink - Steganography tools
 RUN cd /opt && \
     wget http://www.caesum.com/handbook/Stegsolve.jar -O stegsolve.jar && \
     chmod +x stegsolve.jar && \
-    mkdir bin && \
-    mv stegsolve.jar bin/
+    mkdir /opt/bin && \
+    mv stegsolve.jar /opt/bin/
 
 RUN wget -O /usr/local/bin/jsteg \
-   https://github.com/lukechampine/jsteg/releases/download/v0.3.0/jsteg-linux-amd64 && \
-   chmod +x /usr/local/bin/jsteg
+   
+https://github.com/lukechampine/jsteg/releases/download/v0.3.0/jsteg-linux-amd64 && \   chmod +x /usr/local/bin/jsteg
 
 RUN wget -O /usr/local/bin/slink \
-   https://github.com/lukechampine/jsteg/releases/download/v0.3.0/slink-linux-amd64 && \
-   chmod +x /usr/local/bin/slink
+   
+https://github.com/lukechampine/jsteg/releases/download/v0.3.0/slink-linux-amd64 && \   chmod +x /usr/local/bin/slink
 
 # Set the default command to run when the container starts
 CMD ["/bin/bash"]
+
