@@ -1,6 +1,8 @@
 FROM ubuntu:22.04
 LABEL maintainer="Sneha Sudhakaran <ssudhakaran@my.fit.edu>"
+
 ENV DEBIAN_FRONTEND=noninteractive
+
 # Install system and Python dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -34,9 +36,6 @@ RUN pip3 install --upgrade pip setuptools wheel
 
 # Install Python-based forensic tools
 RUN pip3 install python-magic
-RUN pip3 install eml-analyzer==1.1.0
-RUN pip3 install git+https://github.com/volatilityfoundation/volatility3.git
-
 # Install Stegsolve
 RUN mkdir -p /opt/bin && \
     wget -O /opt/bin/stegsolve.jar http://www.caesum.com/handbook/Stegsolve.jar && \
@@ -50,8 +49,9 @@ RUN wget -O /usr/local/bin/jsteg https://github.com/lukechampine/jsteg/releases/
 RUN wget -O /usr/local/bin/slink https://github.com/lukechampine/jsteg/releases/download/v0.3.0/slink-linux-amd64 && \
     chmod +x /usr/local/bin/slink
 
-# Default shell
+# Default to interactive shell
 CMD ["/bin/bash"]
+
 
 
 
