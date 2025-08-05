@@ -1,42 +1,57 @@
-# Use Kali Linux as the base image
-FROM kalilinux/kali-rolling
+FROM ubuntu:22.04
+LABEL maintainer="Sneha Sudhakaran <ssudhakaran@my.fit.edu>"
+ENV DEBIAN_FRONTEND=noninteractive
+# Install system and Python dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    binwalk \
+    python3 \
+    python3-pip \
+    git \
+    unzip \
+    wget \
+    curl \
+    libssl-dev \
+    libffi-dev \
+    libmagic-dev \
+    foremost \
+    steghide \
+    hexedit \
+    hashcat \
+    john \
+    exiftool \
+    ffmpeg \
+    nano \
+    pngcheck \
+    python3-dev \
+    python3-bandit \
+    python3-scapy \
+    sleuthkit \
+    && rm -rf /var/lib/apt/lists/*
 
-LABEL maintainer="Rusheel Raj Panakadan <rpanakadan2022@my.fit.edu>"
+# Upgrade pip and setuptools
+RUN pip3 install --upgrade pip setuptools wheel
 
-# Update packages and install necessary tools
-RUN apt-get update && \
-    apt-get install -y kali-linux-core && \
-    rm -rf /var/lib/apt/lists/*
+# Install Python-based forensic tools
+RUN pip3 install python-magic
+RUN pip3 install eml-analyzer==1.1.0
+RUN pip3 install git+https://github.com/volatilityfoundation/volatility3.git
 
-# Set the timezone to US Eastern Time
-RUN ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime && \
-    dpkg-reconfigure --frontend noninteractive tzdata
+# Install Stegsolve
+RUN mkdir -p /opt/bin && \
+    wget -O /opt/bin/stegsolve.jar http://www.caesum.com/handbook/Stegsolve.jar && \
+    chmod +x /opt/bin/stegsolve.jar
 
-# Installing command-line forensics tools
-RUN apt-get update && \
-    apt-get install -y foremost binwalk steghide hexedit ghex hashcat \
-    john exiftool ffmpeg nano pngcheck python3-dev python3-bandit \
-    python3-binwalk python3-pip python3-scapy radare2 sleuthkit \
-    forensics-all && rm -rf /var/lib/apt/lists/*
+# Install jsteg
+RUN wget -O /usr/local/bin/jsteg https://github.com/lukechampine/jsteg/releases/download/v0.3.0/jsteg-linux-amd64 && \
+    chmod +x /usr/local/bin/jsteg
 
-# Installing EmlAnalyzer - Email Forensics & Volatility3 - Memory Forensics
-RUN pip3 install eml-analyzer volatility3
+# Install slink
+RUN wget -O /usr/local/bin/slink https://github.com/lukechampine/jsteg/releases/download/v0.3.0/slink-linux-amd64 && \
+    chmod +x /usr/local/bin/slink
 
-# Installing Stegsolve, jsteg, and slink - Steganography tools
-RUN cd /opt && \
-    wget http://www.caesum.com/handbook/Stegsolve.jar -O stegsolve.jar && \
-    chmod +x stegsolve.jar && \
-    mkdir /opt/bin && \
-    mv stegsolve.jar /opt/bin/
-
-RUN wget -O /usr/local/bin/jsteg \
-   
-https://github.com/lukechampine/jsteg/releases/download/v0.3.0/jsteg-linux-amd64 && \   chmod +x /usr/local/bin/jsteg
-
-RUN wget -O /usr/local/bin/slink \
-   
-https://github.com/lukechampine/jsteg/releases/download/v0.3.0/slink-linux-amd64 && \   chmod +x /usr/local/bin/slink
-
-# Set the default command to run when the container starts
+# Default shell
 CMD ["/bin/bash"]
+
+
 
