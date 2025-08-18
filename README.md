@@ -6,7 +6,7 @@ Prajakta Meher - (Alumni MS (FIT)) - Former Dockerfile Maintainer and creator//
 ****************************************
 
 **Commands for Dockerfile execution**
-Build : sudo docker build –t ethical-tools .
+Build : sudo docker build –t ethical-tools .       \\
 Run : sudo docker run –it ethical-tools
 
 *****List out Docker & Container images
