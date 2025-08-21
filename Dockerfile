@@ -1,5 +1,5 @@
 FROM ubuntu:22.04
-LABEL maintainer="Sneha Sudhakaran <ssudhakaran@my.fit.edu>"
+LABEL maintainer="Sneha Sudhakaran <ssudhakaran@fit.edu>"
 
 ENV DEBIAN_FRONTEND=noninteractive
 
